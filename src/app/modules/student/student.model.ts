@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
-import validator from "validator";
-const bcrypt = require("bcrypt");
+// import validator from "validator";
+// const bcrypt = require("bcrypt");
 
 import {
   TGuardian,
@@ -9,8 +9,8 @@ import {
   // StudentMethods,
   StudentModel,
   TUserName,
-} from "./student/student.interface";
-import config from "../config";
+} from "./student.interface";
+// import config from "../../config";
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -94,11 +94,17 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, "ID is required"],
       unique: true,
     },
-    password: {
-      type: String,
-      required: [true, "password is required"],
-      maxlength: [20, "Password not more than 20 character"],
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, "User id is required"],
+      unique: true,
+      ref: "User",
     },
+    // password: {
+    //   type: String,
+    //   required: [true, "password is required"],
+    //   maxlength: [20, "Password not more than 20 character"],
+    // },
     name: {
       type: userNameSchema,
       required: [true, "Name is required"],
@@ -156,11 +162,11 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     profileImg: {
       type: String,
     },
-    isActive: {
-      type: String,
-      enum: ["active", "blocked"],
-      default: "active",
-    },
+    // isActive: {
+    //   type: String,
+    //   enum: ["active", "blocked"],
+    //   default: "active",
+    // },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -179,24 +185,24 @@ studentSchema.virtual("fullName").get(function () {
 });
 // pre save middleware / hook : will work on create() save()
 
-studentSchema.pre("save", async function (next) {
-  // console.log(this, "pre hook: we will save the data");
-  const user = this;
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds)
-  );
+// studentSchema.pre("save", async function (next) {
+//   // console.log(this, "pre hook: we will save the data");
+//   const user = this;
+//   user.password = await bcrypt.hash(
+//     user.password,
+//     Number(config.bcrypt_salt_rounds)
+//   );
 
-  next();
-});
+//   next();
+// });
 
-// post save middleware / hook
-studentSchema.post("save", function (doc, next) {
-  doc.password = "";
-  // console.log(doc);
+// // post save middleware / hook
+// studentSchema.post("save", function (doc, next) {
+//   doc.password = "";
+//   // console.log(doc);
 
-  next();
-});
+//   next();
+// });
 // Query Middleware
 studentSchema.pre("find", function (next) {
   this.find({ isDeleted: { $ne: true } });
