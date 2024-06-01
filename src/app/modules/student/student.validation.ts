@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const userNameSchema = z.object({
+const userNameValidationSchema = z.object({
   firstName: z
     .string()
     .trim()
@@ -19,7 +19,7 @@ const userNameSchema = z.object({
     .min(1, "lastName must be at least 1 character long"),
 });
 
-const guardianSchema = z.object({
+const guardianValidationSchema = z.object({
   fatherName: z.string().min(1, "fatherName must be at least 1 character long"),
   fatherOccupation: z
     .string()
@@ -36,41 +36,46 @@ const guardianSchema = z.object({
     .min(1, "motherContactNo must be at least 1 character long"),
 });
 
-const localGuardianSchema = z.object({
+const localGuardianValidationSchema = z.object({
   name: z.string().min(1, "name must be at least 1 character long"),
   occupation: z.string().min(1, "occupation must be at least 1 character long"),
   contactNo: z.string().min(1, "contactNo must be at least 1 character long"),
   address: z.string().min(1, "address must be at least 1 character long"),
 });
 
-const studentValidationSchema = z.object({
-  id: z.string().min(1, "id must be at least 1 character long"),
-  // password: z
-  //   .string()
-  //   .min(1, "password is required")
-  //   .max(20, "Password not more than 20 characters"),
-  name: userNameSchema,
-  gender: z.enum(["male", "female", "other"]),
-  dateOfBirth: z.string().optional(),
-  email: z.string().email("email must be a valid email"),
-  contactNo: z.string().min(1, "contactNo must be at least 1 character long"),
-  emergencyContactNo: z
-    .string()
-    .min(1, "emergencyContactNo must be at least 1 character long"),
-  bloogGroup: z
-    .enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
-    .optional(),
-  presentAddress: z
-    .string()
-    .min(1, "presentAddress must be at least 1 character long"),
-  permanentAddres: z
-    .string()
-    .min(1, "permanentAddress must be at least 1 character long"),
-  guardian: guardianSchema,
-  localGuardian: localGuardianSchema,
-  profileImg: z.string().optional(),
-  // isActive: z.enum(["active", "blocked"]).default("active"),
-  isDeleted: z.boolean().optional().default(false),
+export const createStudentValidationSchema = z.object({
+  body: z.object({
+    // id: z.string().min(1, "id must be at least 1 character long"),
+    password: z
+      .string()
+      .min(1, "password is required")
+      .max(20, "Password not more than 20 characters"),
+    name: userNameValidationSchema,
+    gender: z.enum(["male", "female", "other"]),
+    dateOfBirth: z.string().optional(),
+    email: z.string().email("email must be a valid email"),
+    contactNo: z.string().min(1, "contactNo must be at least 1 character long"),
+    emergencyContactNo: z
+      .string()
+      .min(1, "emergencyContactNo must be at least 1 character long"),
+    bloogGroup: z
+      .enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
+      .optional(),
+    presentAddress: z
+      .string()
+      .min(1, "presentAddress must be at least 1 character long"),
+    permanentAddres: z
+      .string()
+      .min(1, "permanentAddress must be at least 1 character long"),
+    guardian: guardianValidationSchema,
+    localGuardian: localGuardianValidationSchema,
+    admissionSemester: z.string(),
+    profileImg: z.string().optional(),
+    // isActive: z.enum(["active", "blocked"]).default("active"),
+    // isDeleted: z.boolean().optional().default(false),
+  }),
 });
 
-export default studentValidationSchema;
+export const studentValidations = {
+  createStudentValidationSchema,
+};
