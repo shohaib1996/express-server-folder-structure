@@ -49,7 +49,8 @@ export const createStudentValidationSchema = z.object({
     password: z
       .string()
       .min(1, "password is required")
-      .max(20, "Password not more than 20 characters"),
+      .max(20, "Password not more than 20 characters")
+      .optional(),
     name: userNameValidationSchema,
     gender: z.enum(["male", "female", "other"]),
     dateOfBirth: z.string().optional(),
@@ -70,7 +71,7 @@ export const createStudentValidationSchema = z.object({
     guardian: guardianValidationSchema,
     localGuardian: localGuardianValidationSchema,
     admissionSemester: z.string(),
-    profileImg: z.string().optional(),
+    // profileImg: z.string().optional(),
     academicDepartment: z.string(),
     // isActive: z.enum(["active", "blocked"]).default("active"),
     // isDeleted: z.boolean().optional().default(false),
@@ -115,7 +116,7 @@ export const updateStudentValidationSchema = z.object({
     guardian: updateGuardianValidationSchema.optional(),
     localGuardian: updateLocalGuardianValidationSchema.optional(),
     admissionSemester: z.string().optional(),
-    profileImg: z.string().optional(),
+    // profileImg: z.string().optional(),
     academicDepartment: z.string().optional(),
   }),
 });
