@@ -34,7 +34,7 @@ import catchAsync from "../../utils/catchAsync";
 //   };
 // };
 
-const getAllStudents = catchAsync(async (req, res, next) => {
+const getAllStudents = catchAsync(async (req, res) => {
   const result = await StudentServices.getAllStudentsFromDB(req.query);
 
   sendResponse(res, {
@@ -45,7 +45,7 @@ const getAllStudents = catchAsync(async (req, res, next) => {
   });
 });
 
-const getSingleStudent = catchAsync(async (req, res, next) => {
+const getSingleStudent = catchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await StudentServices.getSingleStudentFromDB(id);
@@ -70,7 +70,7 @@ const updateStudent = catchAsync(async (req, res) => {
   });
 });
 
-const deleteStudent = catchAsync(async (req, res, next) => {
+const deleteStudent = catchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await StudentServices.deleteStudentFromDB(id);
